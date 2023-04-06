@@ -35,21 +35,22 @@ int main()
 } 
 
 
+
 //归并排序
 #include <iostream>
 using namespace std;
 
 const int N = 100010;
 
-int tmp[N];
+int q[N], tmp[N];
 int n;
 
-void merge_sort(int q[], int left, int right)
+void merge_sort(int left, int right)
 {
     if(left >= right) return;
     int mid = (left + right) >> 1;
-    merge_sort(q, left, mid);
-    merge_sort(q, mid + 1, right);
+    merge_sort(left, mid);
+    merge_sort(mid + 1,right);
     int k = 0, i = left, j = mid + 1;
     while(i <= mid && j <= right)
     {
@@ -62,11 +63,11 @@ void merge_sort(int q[], int left, int right)
 }
 int main()
 {
-    int q[N];
     scanf("%d",&n);
     for(int i = 0;i < n;i++) scanf("%d",&q[i]);
-    merge_sort(q,0,n-1);
+    merge_sort(0,n - 1);
     for(int i = 0;i < n;i++) printf("%d ",q[i]);
+    return 0;
 }
 
 
