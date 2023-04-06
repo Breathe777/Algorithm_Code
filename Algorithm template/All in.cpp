@@ -106,6 +106,49 @@ int main()
 
 
 
+//区间合并
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+typedef pair<int,int> PII;
+int n;
+void merge(vector<PII>& segs)
+{
+    vector<PII> ans;
+    sort(segs.begin(), segs.end());
+    int st = -2e9, ed = -2e9;
+    for(PII seg : segs)
+    {
+        if(ed < seg.first) 
+        {
+            if(st != -2e9) ans.push_back({st, ed});
+            st = seg.first, ed = seg.second;
+        }
+        else ed = max(ed, seg.second);
+    }
+    if(st != -2e9) ans.push_back({st, ed});
+    
+    segs = ans;
+}
+int main()
+{
+    cin>>n;
+    vector<PII> segs;
+    for(int i = 0;i < n;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        segs.push_back({x, y});
+    }
+    merge(segs);
+    cout<<segs.size()<<endl;
+    return 0;
+}
+
+
+
 //KMP算法 
 #include <iostream>
 using namespace std;
