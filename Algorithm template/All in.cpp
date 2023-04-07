@@ -106,6 +106,87 @@ int main()
 
 
 
+//附带映射关系的手写堆
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+const int N = 100010;
+int h[N],ph[N],hp[N],sz;
+int n,m;
+
+void swap_heap(int a, int b)
+{
+    swap(ph[hp[a]], ph[hp[b]]);
+    swap(hp[a], hp[b]);
+    swap(h[a], h[b]);
+}
+void down(int u)
+{
+    int t = u;
+    if(2 * u <= sz && h[2 * u] < h[t]) t = 2 * u;
+    if(2 * u + 1 <= sz && h[2 * u + 1] < h[t]) t = 2 * u + 1;
+    if(t != u)
+    {
+        swap_heap(t,u);
+        down(t);
+    }
+}
+void up(int u)
+{
+    while(u / 2 && h[u / 2] > h[u])
+    {
+        swap_heap(u / 2, u);
+        u /= 2;
+    }
+}
+int main()
+{
+    scanf("%d",&n);
+    while(n--)
+    {
+        char op[5];
+        scanf("%s",op);
+        if(!strcmp(op,"I"))
+        {
+            int x;
+            scanf("%d",&x);
+            sz++;
+            m++;
+            h[sz] = x;
+            ph[m] = sz, hp[sz] = m;
+            up(sz);
+        }
+        else if(!strcmp(op,"PM")) printf("%d\n",h[1]);
+        else if(!strcmp(op,"DM")) 
+        {
+            swap_heap(1,sz);
+            sz--;
+            down(1);
+        }
+        else if(!strcmp(op,"D"))
+        {
+            int k;
+            scanf("%d",&k);
+            k = ph[k];
+            swap_heap(k,sz);
+            sz--;
+            down(k), up(k);
+        }
+        else
+        {
+            int k,x;
+            scanf("%d%d",&k,&x);
+            k = ph[k];
+            h[k] = x;
+            down(k), up(k);
+        }
+    }
+    return 0;
+}
+
+
+
 //区间合并
 #include <iostream>
 #include <algorithm>
