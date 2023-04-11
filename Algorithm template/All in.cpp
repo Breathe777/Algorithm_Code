@@ -2097,7 +2097,7 @@ int main()
 
 
 
-//lca最近公共祖先
+//倍增求lca 最近公共祖先
 #include <iostream>
 #include <cstring>
 #include <queue>
