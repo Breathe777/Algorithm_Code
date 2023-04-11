@@ -337,7 +337,7 @@ int lowbit(int x)
 {
    return x & -x;
 }
-void add(int x,LL c)
+void updata(int x,LL c)
 {
    for(int i = x;i <= m;i += lowbit(i)) tr[i] = max(tr[i],c);
 }
@@ -359,7 +359,7 @@ int main()
        int x = lower_bound(q,q+m,w[i]) - q + 1;
        LL sum = query(x-1) + w[i];
        res = max(sum,res);
-       add(x,sum);
+       updata(x,sum);
    }
    printf("%lld\n",res);
    return 0;
@@ -369,7 +369,7 @@ int main()
 
 
 
-线段树 
+//线段树 
 #include <cstdio>
 #include <cstring>
 #include <iostream>
