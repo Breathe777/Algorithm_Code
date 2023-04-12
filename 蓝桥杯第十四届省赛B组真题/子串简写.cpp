@@ -25,8 +25,8 @@ int main()
     	{
     		int j = i + k - 1;
     		res += sum[j];
-		}
 	}
-	printf("%lld\n",res);
+    }
+    printf("%lld\n",res);
     return 0;
 }
