@@ -319,8 +319,6 @@ int main()
 
 
 
-
-
 //树状数组 (最长上升子序列和问题)
 #include <iostream>
 #include <cstring>
@@ -364,8 +362,6 @@ int main()
    printf("%lld\n",res);
    return 0;
 } 
-
-
 
 
 
@@ -521,7 +517,6 @@ int main()
 
 
 
-
 //哈希表开放寻址法解决冲突
 #include <iostream>
 #include <cstring>
@@ -560,9 +555,6 @@ int main()
 
 
 
-
-
-
 //字符串哈希 
 #include <iostream>
 #include <cstring>
@@ -595,9 +587,8 @@ int main(){
 
 
 
-
-
 //AC自动机 
+//(1)
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -665,6 +656,7 @@ int main()
 
 
 
+//(2)
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -730,8 +722,6 @@ int main()
 
 
 
-
-
 //manacher算法 
 #include <iostream>
 #include <cstring>
@@ -776,8 +766,6 @@ int main()
    printf("%d\n",ans - 1);
    return 0;
 }
-
-
 
 
 
@@ -826,8 +814,6 @@ int main()
 
 
 
-
-
 //朴素Dijkstra(稠密图)
 #include <iostream>
 #include <cstring>
@@ -866,9 +852,6 @@ int main()
 	int t = Dijkstra();
 	printf("%d\n",t);
 }
-
-
-
 
 
 
@@ -931,9 +914,6 @@ int main()
 
 
 
-
-
-
 //bellman-Ford(负权边)
 #include <iostream>
 #include <cstring>
@@ -978,8 +958,6 @@ int main()
 	if(t != 0x3f3f3f3f) printf("%d\n",t);
 	else puts("impossible");
 }
-
-
 
 
 
@@ -1038,9 +1016,6 @@ int main()
 
 
 
-
-
-
 //Floyd算法
 #include <iostream>
 using namespace std;
@@ -1089,10 +1064,6 @@ int main()
    }
    return 0;
 } 
-
-
-
-
 
 
 
@@ -1188,8 +1159,6 @@ int main()
 	return 0;
 }
 
- 
- 
  
  
 //染色法判断二分图
@@ -2177,6 +2146,92 @@ int main()
         else if(p == y) puts("2");
         else puts("0");
     }
+    return 0;
+}
+
+
+
+//acwing 367
+//有向图 强连通分量
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 110, M = N * N;
+int h[N], e[M], ne[M], idx;
+int stk[N], top;
+int dfn[N], low[N], timestamp;
+bool in_stk[N];
+int id[N], sz[N], scc_cnt;
+int dout[N], din[N];
+int n, m;
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx++;
+}
+void tarjan(int u)
+{
+    dfn[u] = low[u] = ++timestamp;
+    stk[top++] = u, in_stk[u] = true;
+    for(int i = h[u]; ~i; i = ne[i])
+    {
+        int j = e[i];
+        if(!dfn[j])
+        {
+            tarjan(j);
+            low[u] = min(low[u], low[j]);
+        }
+        else if(in_stk[j])
+        {
+            low[u] = min(low[u], dfn[j]);
+        }
+    }
+    if(dfn[u] == low[u])
+    {
+        int y;
+        ++scc_cnt;
+        do{
+            y = stk[--top];
+            in_stk[y] = false;
+            id[y] = scc_cnt;
+            sz[scc_cnt]++;
+        }while(y != u);
+    }
+}
+int main()
+{
+    memset(h, -1, sizeof h);
+    scanf("%d", &n);
+    for(int i = 1;i <= n;i++)
+    {
+        int x;
+        while(scanf("%d", &x))
+        {
+            if(x == 0) break;
+            add(i, x);
+        }
+    }
+    for(int i = 1;i <= n;i++)
+    {
+        if(!dfn[i]) tarjan(i);
+    }
+    for(int i = 1;i <= n;i++)
+    {
+        for(int j = h[i]; ~j; j = ne[j])
+        {
+            int k = e[j];
+            int a = id[i], b = id[k];
+            if(a != b) dout[a]++, din[b]++;
+        }
+    }
+    int src = 0, des = 0;
+    for(int i = 1;i <= scc_cnt;i++)
+    {
+        if(!din[i]) src++;
+        if(!dout[i]) des++;
+    }
+    printf("%d\n", src);
+    if(scc_cnt == 1) puts("0");
+    else printf("%d\n", max(src, des));
     return 0;
 }
 
