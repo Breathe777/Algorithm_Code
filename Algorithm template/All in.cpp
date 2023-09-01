@@ -2256,3 +2256,67 @@ int main()
     printf("%d\n", (ans + 1) / 2);
     return 0;
 }
+
+
+
+//acwing 1183
+//无向图 点双连通分量
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 10010, M = 30010;
+int h[N], e[M], ne[M], idx;
+int dfn[N], low[N], timestamp;
+int root, ans;
+int n, m;
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx++;
+}
+void tarjan(int u)
+{
+    int cnt = 0;
+    dfn[u] = low[u] = ++timestamp;
+    for(int i = h[u]; ~i; i = ne[i])
+    {
+        int j = e[i];
+        if(!dfn[j])
+        {
+            tarjan(j);
+            low[u] = min(low[u], low[j]);
+            if(low[j] >= dfn[u])
+            {
+                cnt++;
+            }
+        }
+        else low[u] = min(low[u], dfn[j]);
+    }
+    if(u != root) cnt++;
+    ans = max(ans, cnt);
+}
+int main()
+{
+    while(scanf("%d%d", &n, &m), n || m)
+    {
+        memset(h, -1, sizeof h);
+        memset(dfn, 0, sizeof dfn);
+        ans = 0, idx = 0, timestamp = 0;
+        while(m --)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            add(a, b), add(b, a);
+        }
+        int cnt = 0;
+        for(root = 0;root < n;root++)
+        {
+            if(!dfn[root])
+            {
+                tarjan(root);
+                cnt++;
+            }
+        }
+        printf("%d\n", ans + cnt - 1);
+    }
+    return 0;
+}
